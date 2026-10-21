@@ -8,15 +8,38 @@ body {
 
 h1 {
     margin-top: 30px;
-    color: #333;
+    color: #1976d2;
+}
+
+.page-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.page-header #theme-toggle {
+    position: absolute;
+    right: 24px;
+}
+
+h2 {
+    color: #1976d2;
 }
 
 #sudoku-board {
     display: inline-block;
-    margin: 30px auto;
+    margin: 0;
     border: 4px solid #333;
     background: #fff;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.timer {
+    margin: 12px auto 0;
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
 }
 
 .sudoku-row {
@@ -39,13 +62,39 @@ h1 {
 }
 
 .sudoku-cell.prefilled {
-    background: #e0e0e0;
     font-weight: bold;
     color: #333;
 }
 
+:where(.sudoku-row:nth-child(-n+3)) .sudoku-cell:nth-child(-n+3),
+:where(.sudoku-row:nth-child(-n+3)) .sudoku-cell:nth-child(n+7),
+:where(.sudoku-row:nth-child(n+4):nth-child(-n+6)) .sudoku-cell:nth-child(n+4):nth-child(-n+6),
+:where(.sudoku-row:nth-child(n+7)) .sudoku-cell:nth-child(-n+3),
+:where(.sudoku-row:nth-child(n+7)) .sudoku-cell:nth-child(n+7) {
+    background: #f2f2f2;
+}
+
+:where(.sudoku-row:nth-child(-n+3)) .sudoku-cell:nth-child(n+4):nth-child(-n+6),
+:where(.sudoku-row:nth-child(n+4):nth-child(-n+6)) .sudoku-cell:nth-child(-n+3),
+:where(.sudoku-row:nth-child(n+4):nth-child(-n+6)) .sudoku-cell:nth-child(n+7),
+:where(.sudoku-row:nth-child(n+7)) .sudoku-cell:nth-child(n+4):nth-child(-n+6) {
+    background: #d9d9d9;
+}
+
 .sudoku-cell.incorrect {
-    background: #ffcdd2;
+    background: #ffe0b2;
+}
+
+.sudoku-cell.hinted {
+    background: #b9f2d0;
+    color: #14532d;
+    font-weight: bold;
+}
+
+.sudoku-cell.auto-filled {
+    background: #c8ddff;
+    color: #173b73;
+    font-weight: bold;
 }
 
 .sudoku-cell:nth-child(3),
@@ -58,28 +107,234 @@ h1 {
     border-bottom: 3px solid #333;
 }
 
+.game-layout {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 24px;
+    margin: 30px auto;
+}
+
+.board-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .controls {
-    margin: 20px auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    min-width: 140px;
+    text-align: left;
+}
+
+.right-controls {
+    align-items: flex-end;
+}
+
+.controls label {
+    font-weight: bold;
+}
+
+.controls select {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 8px;
+    font-size: 16px;
 }
 
 button {
     padding: 8px 18px;
-    margin: 0 8px;
+    margin: 0;
     font-size: 16px;
-    border: none;
-    background: #1976d2;
-    color: #fff;
+    border: 2px solid #1976d2;
+    background: #fff;
+    color: #1976d2;
     border-radius: 4px;
     cursor: pointer;
     transition: background 0.2s;
 }
 
 button:hover {
-    background: #1565c0;
+    background: #eaf3ff;
+}
+
+button#get-hint {
+    border-color: #b9f2d0;
+    background: #b9f2d0;
+    color: #14532d;
+}
+
+button#get-hint:hover {
+    background: #9ee7bd;
 }
 
 #message {
-    margin-left: 20px;
+    margin: 0;
     font-size: 16px;
     color: #d32f2f;
+}
+
+#leaderboard {
+    width: min(850px, calc(100% - 32px));
+    margin: 40px auto;
+}
+
+#leaderboard table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+}
+
+#leaderboard th,
+#leaderboard td {
+    padding: 10px;
+    border: 1px solid #bbb;
+    text-align: left;
+}
+
+#leaderboard th {
+    background: #1976d2;
+    color: #fff;
+}
+
+#leaderboard tbody tr:nth-child(odd) {
+    background: #fff;
+}
+
+#leaderboard tbody tr:nth-child(even) {
+    background: #eaf3ff;
+}
+
+#leaderboard-message {
+    color: #d32f2f;
+}
+
+body.dark-mode {
+    background: #181a1b;
+    color: #e8e8e8;
+}
+
+body.dark-mode h1,
+body.dark-mode h2 {
+    color: #80b6ff;
+}
+
+body.dark-mode #sudoku-board {
+    border-color: #b0b0b0;
+    background: #2b2e30;
+}
+
+body.dark-mode .sudoku-cell {
+    border-color: #666;
+    background: #292c2e;
+    color: #f2f2f2;
+}
+
+body.dark-mode :where(.sudoku-row:nth-child(-n+3)) .sudoku-cell:nth-child(-n+3),
+body.dark-mode :where(.sudoku-row:nth-child(-n+3)) .sudoku-cell:nth-child(n+7),
+body.dark-mode :where(.sudoku-row:nth-child(n+4):nth-child(-n+6)) .sudoku-cell:nth-child(n+4):nth-child(-n+6),
+body.dark-mode :where(.sudoku-row:nth-child(n+7)) .sudoku-cell:nth-child(-n+3),
+body.dark-mode :where(.sudoku-row:nth-child(n+7)) .sudoku-cell:nth-child(n+7) {
+    background: #30363a;
+}
+
+body.dark-mode :where(.sudoku-row:nth-child(-n+3)) .sudoku-cell:nth-child(n+4):nth-child(-n+6),
+body.dark-mode :where(.sudoku-row:nth-child(n+4):nth-child(-n+6)) .sudoku-cell:nth-child(-n+3),
+body.dark-mode :where(.sudoku-row:nth-child(n+4):nth-child(-n+6)) .sudoku-cell:nth-child(n+7),
+body.dark-mode :where(.sudoku-row:nth-child(n+7)) .sudoku-cell:nth-child(n+4):nth-child(-n+6) {
+    background: #454d52;
+}
+
+body.dark-mode #sudoku-board .sudoku-cell:focus {
+    background: #354b54;
+}
+
+body.dark-mode #sudoku-board .sudoku-cell.prefilled {
+    color: #fff;
+}
+
+body.dark-mode #sudoku-board .sudoku-cell.incorrect {
+    background: #8a511a;
+    color: #fff;
+}
+
+body.dark-mode #sudoku-board .sudoku-cell.hinted {
+    background: #276344;
+    color: #e4ffed;
+}
+
+body.dark-mode .timer {
+    color: #e8e8e8;
+}
+
+body.dark-mode .controls select {
+    border-color: #777;
+    background: #292c2e;
+    color: #f2f2f2;
+}
+
+body.dark-mode button:not(#get-hint) {
+    border-color: #80b6ff;
+    background: #292c2e;
+    color: #a8ceff;
+}
+
+body.dark-mode button:not(#get-hint):hover {
+    background: #35495e;
+}
+
+body.dark-mode #leaderboard table {
+    background: #292c2e;
+}
+
+body.dark-mode #leaderboard th {
+    border-color: #555;
+    background: #245b94;
+    color: #fff;
+}
+
+body.dark-mode #leaderboard td {
+    border-color: #555;
+    color: #e8e8e8;
+}
+
+body.dark-mode #leaderboard tbody tr:nth-child(odd) {
+    background: #292c2e;
+}
+
+body.dark-mode #leaderboard tbody tr:nth-child(even) {
+    background: #343a40;
+}
+
+@media (max-width: 600px) {
+    .page-header #theme-toggle {
+        right: 12px;
+        padding: 8px 10px;
+    }
+
+    .game-layout {
+        flex-direction: column;
+        align-items: flex-start;
+        width: fit-content;
+        max-width: 100%;
+    }
+
+    .controls {
+        width: 100%;
+    }
+
+    .right-controls {
+        align-items: flex-start;
+    }
+
+    .sudoku-cell {
+        box-sizing: border-box;
+        width: min(10vw, 40px);
+        height: min(10vw, 40px);
+        padding: 0;
+        font-size: min(5vw, 20px);
+    }
 }
